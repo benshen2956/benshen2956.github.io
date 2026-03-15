@@ -12,4 +12,3 @@ const showToast = (msg) => {
   //2.2让提示框内容改变
   document.querySelector(".toast-body").innerHTML = msg;
 };
-showToast("注册成功!");
