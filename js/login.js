@@ -25,17 +25,20 @@ document.querySelector("#btn-login").addEventListener("click", async (e) => {
   }
   try {
     const res = await axios.post("/login", data);
-
+    console.log(res);
     const obj = {};
     obj.username = res.data.data.username;
+    obj.token = res.data.data.token;
+
     localStorage.setItem("userMsg", JSON.stringify(obj));
+
     showToast(res.data.message);
 
     setTimeout(() => {
       location.href = "./index.html";
     }, 1000);
   } catch (error) {
-    // console.dir(error);
+    console.dir(error);
     return showToast(error.response.data.message);
   }
 });
