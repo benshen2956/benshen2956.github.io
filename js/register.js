@@ -25,7 +25,7 @@ document.querySelector("#btn-register").addEventListener("click", async (e) => {
   //1.2发送请求
   const res = await axios.post("/register", data);
 
-  showToast(res.data.message); //这里不要用JSON.parse()解构
+  showToast(res.message); //这里不要用JSON.parse()解构
 
   //1.4跳转到登陆页
   setTimeout(() => {

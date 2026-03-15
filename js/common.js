@@ -60,6 +60,7 @@ const logout = () => {
     }, 1000);
   });
 };
+
 axios.interceptors.request.use(
   (config) => {
     console.log(config);
@@ -73,6 +74,30 @@ axios.interceptors.request.use(
   },
   (error) => {
     // Do something with request error
+    return Promise.reject(error);
+  },
+);
+
+//7.响应拦截器
+axios.interceptors.response.use(
+  (response) => {
+    //数据剥离
+    return response.data;
+  },
+  (error) => {
+    // Do something with response error
+    console.dir(error);
+    if (error.response.status === 401) {
+      //token过期或者被篡改
+      showToast("登录过期,请重新登录");
+
+      //清除数据并且跳转
+      localStorage.removeItem("userMsg");
+
+      setTimeout(() => {
+        location.href = "./login.html";
+      }, 1000);
+    }
     return Promise.reject(error);
   },
 );

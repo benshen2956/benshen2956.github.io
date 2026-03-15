@@ -32,20 +32,18 @@ const getData = async () => {
       //     Authorization: token,
       //   },
     });
-    rendOverView(res.data.data.overview);
+    rendOverView(res.data.overview);
   } catch (error) {
-    console.dir(error);
-    if (error.response.status === 401) {
-      //token过期或者被篡改
-      showToast("登录过期,请重新登录");
-
-      //清除数据并且跳转
-      localStorage.removeItem("userMsg");
-
-      setTimeout(() => {
-        location.href = "./login.html";
-      }, 1000);
-    }
+    // console.dir(error);
+    // if (error.response.status === 401) {
+    //   //token过期或者被篡改
+    //   showToast("登录过期,请重新登录");
+    //   //清除数据并且跳转
+    //   localStorage.removeItem("userMsg");
+    //   setTimeout(() => {
+    //     location.href = "./login.html";
+    //   }, 1000);
+    // }
   }
   //   console.log(res);
 };
