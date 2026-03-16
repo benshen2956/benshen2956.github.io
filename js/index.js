@@ -334,28 +334,25 @@ const renderGroupData = (groupData) => {
     ],
   };
   myChart.setOption(option);
+
+  //4. 切换数据
+  //4.1 给组号绑定点击事件(事件委托)
+  document.querySelector("#btns").addEventListener("click", (e) => {
+    //得确定点的是分页,而不是这一大块其他部分
+    if (e.target.tagName === "BUTTON") {
+      //4.3排他,选了一个就高亮一个
+      document
+        .querySelector("#btns")
+        .querySelector(".btn-blue")
+        .classList.remove("btn-blue");
+
+      e.target.classList.add("btn-blue");
+      const group = e.target.innerHTML;
+
+      option.xAxis.data = groupData[group].map((item) => item.name);
+      option.series[0].data = groupData[group].map((item) => item.hope_salary);
+      option.series[1].data = groupData[group].map((item) => item.salary);
+      myChart.setOption(option);
+    }
+  });
 };
-
-// const createStudent = async (studentData) => {
-//   try {
-//     const res = await axios.post("/students", studentData);
-
-//     console.log("✅ 添加成功");
-//     console.log(res);
-//   } catch (error) {
-//     console.log("❌ 添加失败");
-//     console.log(error);
-//   }
-// };
-// createStudent({
-//   name: "张伟",
-//   age: 20,
-//   gender: 0,
-//   province: "北京",
-//   city: "北京",
-//   area: "海淀区",
-//   hope_salary: 12000,
-//   salary: 10500,
-//   group: 1,
-// });
-// createStudent;
