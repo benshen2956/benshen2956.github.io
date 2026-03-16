@@ -38,6 +38,7 @@ const getData = async () => {
     renderYear(year);
     renderSalaryData(salaryData);
     renderGroupData(groupData);
+    renderGenderData(salaryData);
   } catch (error) {
     // console.dir(error);
     // if (error.response.status === 401) {
@@ -178,7 +179,7 @@ const renderYear = (year) => {
 const renderSalaryData = (salaryData) => {
   console.log(salaryData);
   const myChart = echarts.init(document.querySelector("#salary"));
-  option = {
+  const option = {
     title: {
       // 标题位置
       top: 10,
@@ -355,4 +356,72 @@ const renderGroupData = (groupData) => {
       myChart.setOption(option);
     }
   });
+};
+
+/**
+ * 目标8: 男女薪资分布
+ */
+const renderGenderData = (salaryData) => {
+  const myChart = echarts.init(document.querySelector("#gender"));
+  const option = {
+    title: [
+      {
+        // 标题位置
+        top: 10,
+        left: 10,
+        text: "男女薪资分布",
+        // 文字大小
+        textStyle: {
+          fontSize: 16,
+        },
+      },
+      {
+        text: "男生",
+        left: "45%",
+        top: "48%",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+      {
+        text: "女生",
+        left: "45%",
+        top: "90%",
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+    ],
+
+    tooltip: {},
+    // 每个环的颜色
+    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+    series: [
+      {
+        name: "男生",
+        type: "pie",
+        // 饼图的大小 [内圆的半径, 外圆的半径]
+        radius: ["20%", "30%"], // 圆的半径
+        center: ["50%", "30%"], // 圆的位置
+
+        data: salaryData.map((item) => ({
+          value: item.b_count,
+          name: item.label,
+        })),
+      },
+      {
+        name: "女生",
+        type: "pie",
+        // 饼图的大小 [内圆的半径, 外圆的半径]
+        radius: ["20%", "30%"], // 圆的半径
+        center: ["50%", "70%"], // 圆的位置
+
+        data: salaryData.map((item) => ({
+          value: item.g_count,
+          name: item.label,
+        })),
+      },
+    ],
+  };
+  myChart.setOption(option);
 };
