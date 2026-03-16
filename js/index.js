@@ -32,8 +32,12 @@ const getData = async () => {
       //     Authorization: token,
       //   },
     });
-    rendOverView(res.data.overview);
-    renderYear(res.data.year);
+    // console.log("all:", res.data);
+    const { overview, year, salaryData, groupData } = res.data;
+    rendOverView(overview);
+    renderYear(year);
+    renderSalaryData(salaryData);
+    renderGroupData(groupData);
   } catch (error) {
     // console.dir(error);
     // if (error.response.status === 401) {
@@ -167,6 +171,171 @@ const renderYear = (year) => {
   };
   myChart.setOption(option);
 };
+
+/**
+ * 目标6: 完成饼图渲染 => 薪资分布
+ */
+const renderSalaryData = (salaryData) => {
+  console.log(salaryData);
+  const myChart = echarts.init(document.querySelector("#salary"));
+  option = {
+    title: {
+      // 标题位置
+      top: 10,
+      left: 10,
+      text: "班级薪资分布",
+      // 文字大小
+      textStyle: {
+        fontSize: 16,
+      },
+    },
+    tooltip: {
+      trigger: "item",
+    },
+    legend: {
+      bottom: 0,
+      left: "center",
+    },
+    series: [
+      {
+        name: "班级薪资分布",
+        type: "pie",
+        // 饼图的大小 [内圆的半径, 外圆的半径]
+        radius: ["60%", "80%"],
+        //提示线的防止重叠策略
+        avoidLabelOverlap: false,
+        //饼状图每个环链接处的策略
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+        label: {
+          show: false,
+          position: "center",
+        },
+        //就是中间的黑字提示,不需要
+        // emphasis: {
+        //   label: {
+        //     show: true,
+        //     fontSize: 15,
+        //     fontWeight: "bold",
+        //   },
+        // },
+        //提示线
+        labelLine: {
+          show: false,
+        },
+        // data: [
+        //   { value: 1048, name: "Search Engine" },
+        //   { value: 735, name: "Direct" },
+        //   { value: 580, name: "Email" },
+        //   { value: 484, name: "Union Ads" },
+        //   { value: 300, name: "Video Ads" },
+        // ],
+        data: salaryData.map((item) => ({
+          value: item.g_count + item.b_count,
+          name: item.label,
+        })),
+      },
+    ],
+    // 每个环的颜色
+    color: ["#fda224", "#5097ff", "#3abcfa", "#34d39a"],
+  };
+  myChart.setOption(option);
+};
+
+/**
+ * 目标7: 每组薪资图标
+ */
+const renderGroupData = (groupData) => {
+  console.log("每组薪资", groupData);
+  const myChart = echarts.init(document.querySelector("#lines"));
+  option = {
+    tooltip: { trigger: "item" },
+    grip: {
+      left: 70,
+      top: 30,
+      right: 30,
+      bottom: 50,
+    },
+    xAxis: {
+      type: "category",
+      data: groupData[3].map((item) => item.name),
+      axisLine: {
+        lineStyle: {
+          type: "dashed",
+          color: "#ccc",
+        },
+      },
+      axisLabel: {
+        //默认颜色和axisLine.axisLine. color一致
+        color: "#999",
+      },
+    },
+    yAxis: {
+      type: "value",
+      splitLine: {
+        show: "true",
+        lineStyle: {
+          type: "dashed",
+        },
+      },
+    },
+    series: [
+      {
+        data: groupData[3].map((item) => item.hope_salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: "#499FEE", // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(73,159,238,0.2)", // 100% 处的颜色
+              },
+            ],
+            global: false, // 缺省为 false
+          },
+        },
+      },
+      {
+        data: groupData[3].map((item) => item.salary),
+        type: "bar",
+        itemStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: "#34D39A", // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "rgba(52,211,154,0.2)", // 100% 处的颜色
+              },
+            ],
+            global: false, // 缺省为 false
+          },
+        },
+      },
+    ],
+  };
+  myChart.setOption(option);
+};
+
 // const createStudent = async (studentData) => {
 //   try {
 //     const res = await axios.post("/students", studentData);
