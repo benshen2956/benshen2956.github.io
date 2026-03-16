@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Include the ECharts file you just downloaded -->
+    <script src="../lib/echarts.min.js"></script>
+  </head>
+</html>
+<body>
+  <div id="main" style="width: 600px; height: 400px"></div>
+  <script type="text/javascript">
+    const foodArr = [
+      { name: "西兰花", price: 150 },
+      { name: "西瓜", price: 230 },
+      { name: "西葫芦", price: 224 },
+      { name: "西北风", price: 34 },
+      { name: "西红柿", price: 135 },
+      { name: "西芹", price: 147 },
+      { name: "西洋菜", price: 260 },
+    ];
+
+    // Initialize the echarts instance based on the prepared dom
+    var myChart = echarts.init(document.getElementById("main"));
+
+    // Specify the configuration items and data for the chart
+    var option = {
+      //标题组件配置
+      title: {
+        text: "商品数据",
+        show: true,
+      },
+      //提示框组件
+      tooltip: {
+        //trigger触发提示的方式
+        // item 数据触发
+        // axis 轴线触发
+        trigger: "axis",
+      },
+      legend: {
+        //和series中的name需要一样
+        data: ["价格"],
+        right: 20,
+      },
+
+      //网格的位置
+      grid: {
+        left: "8%",
+      },
+      //x轴
+      xAxis: {
+        data: foodArr.map((item) => item.name),
+      },
+      //y轴的配置项
+      yAxis: {
+        splitLine: {
+          //y轴分割线设置
+          //   show: false,
+          lineStyle: {
+            type: "dashed",
+          },
+        },
+      },
+      series: [
+        {
+          name: "价格", //数据的名称
+          type: "line", // bar->柱状图,line->折线图
+          data: foodArr.map((item) => item.price),
+        },
+      ],
+      color: ["red"],
+    };
+
+    // Display the chart using the configuration items and data just specified.
+    myChart.setOption(option);
+  </script>
+</body>
