@@ -75,7 +75,7 @@ const renderYear = (year) => {
   const option = {
     //标题组件
     title: {
-      text: "2022全学科薪资走势",
+      text: "2026全学科薪资走势",
       left: 5,
       top: 10,
     },
@@ -107,7 +107,10 @@ const renderYear = (year) => {
         },
       },
     },
-
+    tooltip: {
+      show: true,
+      trigger: "axis",
+    },
     series: [
       {
         data: year.map((item) => item.salary),
@@ -115,7 +118,7 @@ const renderYear = (year) => {
         smooth: true,
 
         //折线标记点的大小
-        symbolSize: 10,
+        symbolSize: 7,
 
         //线条样式
         lineStyle: {
